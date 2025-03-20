@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon</title>
+    <link rel="stylesheet" href="./src/css/styles.css">
+    <!-- bootstrap -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+</head>
+<body class="flex-f row row-cols-8">
+    <!-- Pokemon básico, te da a eligir entre los 3 iniciales de 1ªgen (#1, #4, #7) -->
+    <!---------------------------------------------------------------------------->
+    <!-- La idea es, mostrar primero un menú donde vemos a los tres pokemon (pueden ser RNG) -->
+    <!-- puedes clickar encima para seleccionarlo, y una vez seleccionado darle a 'LUCHAR!' -->
+    <!-- este cambiará el layout de la página, aparecerá otro pokemon RNG contra el que lucharás -->
+
+    <!-- botones funcionales -->
+    <div class="btn-toolbar col-2 justify-content-evenly output-no-bg" role="group">
+        <div class="buscador-contenedor"><a href="./src/html/buscador.html" target="_blank" class="buscador btn btn-info">Pokédex</a></div>
+        <div class="github-contenedor"><a href="#" target="_blank" class="github btn btn-info">Github</a></div>
+        <div class="reiniciar-contenedor"><a href="./index.html" target="_self" class="github btn btn-info">Reiniciar</a></div>
+    </div>
+    
+    <!-- para hacerlo más retro, vamos a forzar a al juego a ser 800x600 -->
+    <main class="output col-10" style="max-width: 800px;width: 800px;max-height: 600px;height: 600px;">
+        <!-- el siguiente div está destinado únicamente a ser el menú donde eliges el pokemon para el combate -->
+        <div class="selector row-cols-5">
+            <!-- en el siguiente div se verán a los 3 pokemon -->
+            <div class="pokemons col-4 flex-f" style="width:80%;margin:10% auto 0px auto;">
+                <!-- esta parte la modificamos con js -->
+                <div id="pokemon-1" class="centrar" style="height: 200px; width: 150px; margin: 25px;"></div>
+                <div id="pokemon-2" class="centrar" style="height: 200px; width: 150px; margin: 25px;"></div>
+                <div id="pokemon-3" class="centrar"style="height: 200px; width: 150px; margin: 25px;"></div>
+            </div>
+            <button class="aceptar btn btn-warning col-2 centrar">Seleccionar</button>
+        </div>
+
+        <!-- el siguiente div está destinado únicamente a ser el menú de batalla -->
+         <div class="batalla row-cols-7" style="display:none; justify-content: space-between; flex-direction: column;">
+            <!-- visor de los pokemons y la vida -->
+            <div class="visor row-10 col-16">
+                <!-- enemigo -->
+                 <div class="contenedor-enemigo flex-f" style="justify-content: space-between;">
+                     <div class="statsEnemigo stats" style="height: 80px; width: 400px;">
+                         <div class="nombreEnemigo centrar align-self-end fw-semibold"></div>
+                         <div class="stat-hp-enemigo">
+                             <div class="hp-enemigo flex-f centrar"><span class="hp-actual-enemigo"></span><span class="barraLateral">/</span><span class="hp-maxima-enemigo"></span><i class="bi bi-heart-fill" style="color:#ff3700be;"></i></div>
+                             <div class="barra-hp-enemigo flex-f"></div>
+                         </div>
+                     </div>
+                     <div class="img-enemigo aling-self-end"></div>
+                 </div>
+
+                <!-- usuario -->
+                <div class="contenedor-usuario flex-f statsUsuario" style="justify-content: space-between;">
+                    <div class="img-usuario aling-self-start" style="overflow: visible;"></div>
+                    <div class="stats aling-self-end" style="height: 80px; width: 400px;">
+                        <div class="nombreUsuario align-self-end centrar fw-semibold"></div>
+                        <div class="stat-hp-usuario">
+                            <div class="flex-f hp-usuario centrar"><span class="hp-actual-usuario"></span><span class="barraLateral">/</span><span class="hp-maxima-usuario"></span><i class="bi bi-heart-fill" style="color:#ff3700be;"></i></div>
+                            <div class="barra-hp-usuario flex-f"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- contenedor de botones, menus varios...-->
+             <div class="comandos col-3 --bs-primary-border-subtle" style="height: 200px; width: 100%;">
+                <!-- menu general -->
+                <div class="botones-comandos flex-f">
+                    <button class="atacar btn btn-warning">Atacar</button>
+                    <button class="mochila btn btn-warning">Mochila</button>
+                    <button class="huir btn btn-warning">Huir</button>
+            </div>
+                <!-- salida de texto -->
+                <div id="contenedor-texto" style="height: 50%;"><span class="salidaTexto fw-bold" style="height: 100%;"></span></div>
+                <div class="contenedor-boton-reiniciar centrar">
+                    <a href="./index.html" target="_self" class="boton-reinicio-end btn btn-warning">Nueva partida</a>
+                </div>
+
+                <!-- menu de los movimientos -->
+                <div class="botones-movimientos row row-cols-13 flex-f" style="height: 100%;">
+
+                    <!-- boton para volver atrás -->
+                    <button class="volver-atras-movimientos btn btn-warning centrar-vertical row-4 col-1"><i class="bi bi-x-square"></i></button>
+
+                    <!-- botones de los movimientos -->
+                    <div class="movimientos flex-f flex-f-w centrar" style="height: 100%;width: 80%;">
+                        <div class="contenedor-primer-movimiento w-50 centrar"><button class="primer-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
+                        <div class="contenedor-segundo-movimiento w-50 centrar"><button class="segundo-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
+                        <div class="contenedor-tercer-movimiento w-50 centrar"><button class="tercer-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
+                        <div class="contenedor-cuarto-movimiento w-50 centrar"><button class="cuarto-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
+                    </div>
+
+                </div>
+
+                <!-- menu de la mochila -->
+                <div class="contenedor-mochila row row-cols-13 flex-f" style="height: 100%;">
+
+                    <!-- boton para volver atras -->
+                    <button class="volver-atras-mochila btn btn-warning centrar-vertical row-4 col-1"><i class="bi bi-x-square"></i></button>
+
+                    <!-- lista de objetos -->
+                    <div class="mochila centrar" style="height: 200px;width: 80%;">
+                        <p class="texto-mochila centrar texto" style="height: 30%;">Mochila</p>
+                        <ul class="contenedor-objetos flex-f flex-f-w" style="height: 70%;overflow-y:auto;">
+                            
+                        </ul>
+                    </div>
+
+                </div>
+
+            </div>
+         </div>
+    </main>
+    <script type="module" src="src/js/api.js"></script>
+    <script type="module" src="src/js/generador.js"></script>
+    <script type="module" src="src/js/selector.js"></script>
+    <script type="module" src="src/js/main.js"></script>
+</body>
+</html>

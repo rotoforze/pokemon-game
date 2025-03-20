@@ -1,0 +1,90 @@
+*{
+  overflow: hidden;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  input, button, section{
+    font-size: 25px;
+    text-align: center;
+  }
+  div{
+    display:flex;
+    flex-direction:column;
+  }
+  p{
+    display:flex;
+    flex-direction:row;
+    flex-flow:3;
+  }
+  td{
+    border: 1px solid black;
+    padding: 5px;
+  }
+.pointer {
+  cursor: pointer;
+}
+.flex-f {
+  display: flex;
+  flex-direction: row;
+}
+.flex-f-w {
+  flex-wrap: wrap;
+}
+.mitad-del-flex {
+  flex: 0 0 50%;
+}
+.centrar {
+  margin: 0px auto 0px auto;
+}
+.centrar-vertical {
+  margin: auto 0px auto 0px;
+}
+.output, .output-no-bg {
+  margin: 1px auto 1px auto;
+}
+.output {
+  background-image: radial-gradient(#afafaf, #aaafff, #00bbbf);
+}
+.statsUsuario {
+  margin: 12% 0 0 0;
+}
+.statsEnemigo {
+  margin: 10px 0 0 0;
+}
+.barra-hp-usuario, .barra-hp-enemigo {
+  background-color: #5c5c5c;
+  width: 90%;
+  margin: 3px auto 0px auto;
+  margin-bottom: 5px;
+  border: #5c5c5c 3px outset;
+  border-radius: 10px;
+}
+.bloque-barra-vida{
+  height: 20px;
+  background-color: red;
+}
+.stats {
+  background-color: #9eceee;
+  border: 6px #5c5c5c outset;
+  border-top-right-radius: 20px;
+  border-bottom-left-radius: 20px;
+}
+.comandos {
+  background-image: radial-gradient(#5c5c5c, #9e9e9e);
+  border:#5c5c5c 6px outset;
+  border-top-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.texto {
+  height: 30% !important;
+}
+.salidaTexto, .texto {
+  padding: 10px;
+  text-align: center;
+  color:aliceblue;
+  text-shadow: #5c5c5c 2px 2px 2px;
+  height: 100%;
+}

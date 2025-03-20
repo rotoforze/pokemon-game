@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buscador de pokémon</title>
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+    <h1>Pokédex</h1>
+    <input id="search-input" required>
+    <button id="search-button">Buscar</button>
+    <table>
+        <tr>
+            <td colspan="3"><span id="pokemon-name"></span></td>
+            <td><span id="pokemon-id"></span</td>
+        </tr>
+        <tr>
+            <td>Peso</td>
+            <td><span id="weight"></span></td>
+            <td>Altura</td>
+            <td><span id="height"></span></td>
+        </tr>
+        <tr>
+            <td colspan="2">Estadisticas</td>
+            <td rowspan="7" colspan="2" id="imagen"></td>
+        </tr>
+        <tr>
+            <td>HP</td>
+            <td><span id="hp"></span></td>
+        </tr>
+        <tr>
+            <td>ATK</td>
+            <td><span id="attack"></span></td>
+        </tr>
+        <tr>
+            <td>DEF</td>
+            <td><span id="defense"></span></td>
+        </tr>
+        <tr>
+            <td>SP.ATK</td>
+            <td><span id="special-attack"></span></td>
+        </tr>
+        <tr>
+            <td>SP.DEF</td>
+            <td><span id="special-defense"></span></td>
+        </tr>
+        <tr>
+            <td>SPD</td>
+            <td><span id="speed"></span></td>
+        </tr>
+        <tr>
+            <td>Tipos</td>
+            <td colspan ="3"><span id="types"></span></td>
+        </tr>
+    </table>
+    <script src="../js/buscador.js"></script>
+</body>
+</html>
