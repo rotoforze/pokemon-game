@@ -58,6 +58,8 @@ async function factorizarOutput(pokemon) {
     // añadir la consola visual donde eliges el ataque
 }
 
+/* ->->->->->->- USUAIRO -<-<-<-<-<-<- */
+
 async function factorizarUsuario(user) {
     nombreUsuario.innerHTML = user["name"];
     hpUsuario = user["stats"][0]["base_stat"];
@@ -108,6 +110,18 @@ function ponerBarraVidaUsuario() {
     }
 }
 
+export function addUsuarioHp(cantidad) {
+    let cantidadCurada = 0;
+    while (cantidad < 0 && hpUsuario <= userMaxHp.innerHTML) {
+        hpUsuario++;
+        cantidadCurada++;
+    }
+
+    console.log("batalla.addUsuarioHp: "+nombreUsuario.innerHTML+" curado x"+cantidadCurada);
+    actulizarVidas();
+    return cantidadCurada;
+}
+
 /* ->->->->->->- ENEMIGO -<-<-<-<-<-<- */
 
 async function factorizarEnemigo(enemigo) {
@@ -154,9 +168,24 @@ function ponerBarraVidaEnemigo() {
     }
 }
 
+export function addEnemigoHp(cantidad) {
+    let cantidadCurada = 0;
+    while (cantidad < 0 && valorHpEnemigo <= enemigoHpMax.innerHTML) {
+        valorHpEnemigo++;
+        cantidadCurada++;
+    }
+
+    console.log("batalla.addUsuarioHp: "+nombreEnemigo.innerHTML+" curado x"+cantidadCurada);
+    actulizarVidas();
+    return cantidadCurada;
+}
+
+
 function actulizarVidas() {
     userHp.innerHTML = hpUsuario;
     enemigoHp.innerHTML = valorHpEnemigo;
+    ponerBarraVidaUsuario();
+    ponerBarraVidaEnemigo();
 }
 
 /* ->->->->->->- ATAQUE -<-<-<-<-<-<- */

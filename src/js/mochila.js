@@ -32,7 +32,7 @@ let listaObjetos = [
         ["Proteína", 20],
         ["Ataque X", 50],
         ["", 0]
-    ],
+    ], 
     [
         // más DEF
         ["Hierro", 20],
@@ -40,6 +40,17 @@ let listaObjetos = [
         [null, null]
     ],
 ];
+
+import { addUsuarioHp } from "./batalla.js";
+
+function usarCuracion() {
+    // cura cantidad
+    console.log("mochila.usarCuracion: "+this.innerHTML);
+
+    const cantidad = getStatItem(this.innerHTML);
+    addUsuarioHp(cantidad);
+
+}
 
 export function aniadirItemsAMochila(nombre) {
 
@@ -53,7 +64,9 @@ export function aniadirItemsAMochila(nombre) {
 
     const itemToAdd = document.createElement("li");
     itemToAdd.innerHTML = nombre;
-    itemToAdd.setAttribute("class", "texto");
+    itemToAdd.setAttribute("class", "btn btn-info centrar-vertical");
+    itemToAdd.setAttribute("style", "margin-left: 3px;")
+    itemToAdd.addEventListener("click", usarCuracion);
     contenedorItems.appendChild(itemToAdd);
 
     console.log("mochila.aniadirItemsAMochila: Añadido nuevo item: "+nombre);
