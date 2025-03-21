@@ -40,6 +40,8 @@ async function factorizarOutput(pokemon) {
     selector.style.display = "none";
     // mostramos la pantalla de batalla
     batalla.style.display = "block";
+    borrarEnemigo();
+    borrarUsuario();
 
     // primero hay que poner los parámetros del pokemon
     // elegido en sus respectivos sitios...
@@ -59,6 +61,16 @@ async function factorizarOutput(pokemon) {
 }
 
 /* ->->->->->->- USUAIRO -<-<-<-<-<-<- */
+function borrarUsuario() {
+    if (userSprite.lastChild) userSprite.lastChild.remove();
+    nombreUsuario.innerHTML = "";
+    hpUsuario = 0;
+    atkUsuario = 0;
+    defUsuario = 0;
+    velUsuario = 0;
+    userHp.innerHTML = "";
+    userMaxHp.innerHTML = "";
+}
 
 async function factorizarUsuario(user) {
     nombreUsuario.innerHTML = user["name"];
@@ -100,7 +112,7 @@ function ponerBarraVidaUsuario() {
 
     const anchoDelContenedor = userHpBar.clientWidth;
     const ancho = (anchoDelContenedor / userMaxHp.innerHTML).toFixed(2);
-    for (let i = hpUsuario; i>0; i--) {
+    for (let i = hpUsuario+1; i>0; i--) {
 
         // vamos a crear la barra de vida
         const elemento = document.createElement("div");
@@ -112,7 +124,7 @@ function ponerBarraVidaUsuario() {
 
 export function addUsuarioHp(cantidad) {
     let cantidadCurada = 0;
-    while (cantidad < 0 && hpUsuario <= userMaxHp.innerHTML) {
+    while (cantidad > 0 && hpUsuario < userMaxHp.innerHTML) {
         hpUsuario++;
         cantidadCurada++;
     }
@@ -122,7 +134,24 @@ export function addUsuarioHp(cantidad) {
     return cantidadCurada;
 }
 
+export function addUsuarioAtk(cantidad) {
+    console.log("batalla.addUsuarioAtk: "+atkUsuario+">>>"+(atkUsuario+cantidad));
+    atkEnemigo += cantidad;
+    return atkUsuario;
+}
+
 /* ->->->->->->- ENEMIGO -<-<-<-<-<-<- */
+
+function borrarEnemigo() {
+    if (enemigoSprite.lastChild) enemigoSprite.lastChild.remove();
+    nombreEnemigo.innerHTML = "";
+    valorHpEnemigo = 0;
+    atkEnemigo = 0;
+    defEnemigo = 0;
+    velEnemigo = 0;
+    enemigoHp.innerHTML = "";
+    enemigoHpMax.innerHTML = "";
+}
 
 async function factorizarEnemigo(enemigo) {
     nombreEnemigo.innerHTML = enemigo["name"];
@@ -158,7 +187,7 @@ function ponerBarraVidaEnemigo() {
 
     const anchoDelContenedor = enemigoHpBar.clientWidth;
     const ancho = (anchoDelContenedor / enemigoHpMax.innerHTML).toFixed(2);
-    for (let i = valorHpEnemigo; i>0; i--) {
+    for (let i = valorHpEnemigo+1; i>0; i--) {
 
         // vamos a crear la barra de vida
         const elemento = document.createElement("div");
@@ -180,6 +209,12 @@ export function addEnemigoHp(cantidad) {
     return cantidadCurada;
 }
 
+export function addEnemigoAtk(cantidad) {
+    console.log("batalla.addEnemigoAtk: "+atkEnemigo+">>>"+(atkEnemigo+cantidad));
+    atkEnemigo += cantidad;
+    return atkEnemigo;
+}
+
 
 function actulizarVidas() {
     userHp.innerHTML = hpUsuario;
@@ -199,6 +234,9 @@ function funcionAbsorber(danio) {
     return Math.floor(curacion);
 }
 
+let ppHabilidadesUsuario = ["", 5, 5, 5];
+let ppHabilidadesEnemigo = ["", 5, 5, 5];
+
 export function atacar(flag, tipoAtaque) {
     contadorTurnos++;
     console.log("------------------------------------------------------------------------------");
@@ -214,7 +252,7 @@ export function atacar(flag, tipoAtaque) {
         plusDanio = getAtaque(tipoAtaque);
     } 
         
-
+    
     console.log("Ataca: "+flag);
     // si es positivo, ataca el usuario
     let curado = 0;
@@ -222,11 +260,11 @@ export function atacar(flag, tipoAtaque) {
     let nuevoAtk = tipoAtaque;
     if (flag) {
         console.log("tAtaque: "+nuevoAtk+" "+plusDanio+" Usuario: atk> "+atkUsuario+" def> "+defUsuario+" vel> "+velUsuario);
-        danioRecibir = (atkUsuario+plusDanio)-defEnemigo > 0 ? (atkUsuario+plusDanio)-defEnemigo : 1;
-
+        danioRecibir = (atkUsuario+plusDanio)-defEnemigo > 1 ? (atkUsuario+plusDanio)-defEnemigo : plusDanio;
+        
         if (nuevoAtk === 'absorber'  || nuevoAtk == 10) {
             let curacion = funcionAbsorber(danioRecibir);
-
+            ppHabilidadesUsuario[1]--;
             while (curacion > 0 && hpUsuario < userMaxHp.innerHTML) {
                 hpUsuario++;
                 curacion--;
@@ -237,17 +275,19 @@ export function atacar(flag, tipoAtaque) {
         }
         
         if (nuevoAtk === 'malicioso') {
+            ppHabilidadesUsuario[3]--;
             let bajadaDefensa = defEnemigo-Math.floor((10*defEnemigo)/100);
             bajadaDefensa++;
             console.log("batalla.atacar.malicioso: "+defEnemigo+">>>"+bajadaDefensa);
             defEnemigo = bajadaDefensa;
         }else if (nuevoAtk == 'gruñido'){
+            ppHabilidadesUsuario[2]--;
             let bajadaAtaque = atkEnemigo - Math.floor((10*atkEnemigo)/100);
             bajadaAtaque++;
             console.log("batalla.atacar.gruñido: "+atkEnemigo+">>>"+bajadaAtaque);
             atkEnemigo = bajadaAtaque;
         }else{
-
+            
             for (let i = danioRecibir; i>0 && valorHpEnemigo>0; i--){
                 if (enemigoHpBar.children.length == 1) {
                     valorHpEnemigo--;
@@ -263,13 +303,21 @@ export function atacar(flag, tipoAtaque) {
 
     }else {
         // ataca el enemigo
-        nuevoAtk = getAtaque(Math.floor((Math.random()*3)+1));
+        nuevoAtk = getAtaque(Math.floor((Math.random()*6)+1));
+        if (nuevoAtk == undefined){
+            nuevoAtk = 'placaje';
+            var danioAtk = getAtaque(nuevoAtk);
+            danioRecibir = (atkEnemigo+danioAtk)-defUsuario > 1 ? (atkEnemigo+danioAtk)-defUsuario : danioAtk;
+        } else {
+            danioRecibir = (atkEnemigo+nuevoAtk)-defUsuario > 1 ? (atkEnemigo+nuevoAtk)-defUsuario : 25;
+        }
+
         console.log("batalla.ataque.enemigo: nuevoMovimiento: "+nuevoAtk);
         
         console.log("Enemigo: tAtk "+nuevoAtk+" atk>"+atkEnemigo+" def> "+defEnemigo+" vel> "+velEnemigo);
-        danioRecibir = (atkEnemigo+nuevoAtk)-defUsuario > 0 ? (atkEnemigo+nuevoAtk)-defUsuario : 1;
-
+        
         if (nuevoAtk === 'absorber') {
+            ppHabilidadesEnemigo[1]--;
             let curacion = funcionAbsorber(danioRecibir);
 
             while (curacion > 0 && valorHpEnemigo < enemigoHpMax.innerHTML) {
@@ -282,17 +330,19 @@ export function atacar(flag, tipoAtaque) {
         }
         
         if (nuevoAtk === 'malicioso') {
+            ppHabilidadesEnemigo[3]--;
             let bajadaDefensa = defUsuario - Math.floor((10*defUsuario)/100);
             bajadaDefensa++;
             console.log("batalla.atacar.malicioso.enemigo: "+defUsuario+">>>"+bajadaDefensa);
             defUsuario = bajadaDefensa;
         }else if (nuevoAtk == 'gruñido'){
+            ppHabilidadesEnemigo[2]--;
             let bajadaAtaque = atkUsuario - Math.floor((10*atkUsuario)/100);
             bajadaAtaque++;
             console.log("batalla.atacar.gruñido.enemigo: "+atkUsuario+">>>"+bajadaAtaque);
             atkUsuario = bajadaAtaque;
         }else {
-
+            
             for (let i = danioRecibir; i>0 && hpUsuario>0; i--){
                 if (userHpBar.children.length == 1){
                     hpUsuario--;
@@ -303,12 +353,14 @@ export function atacar(flag, tipoAtaque) {
                     console.log("ERROR: el usuario no ha podido procesar el daño ó daño insuficiente")
                 }
             }
-
+            
         }
     }
-
     
-
+    console.log("ppUser: "+ppHabilidadesUsuario);
+    console.log("ppEnemigo: "+ppHabilidadesEnemigo);
+    
+    
     actulizarVidas();
     console.log("------------------------------------------------------------------------------");
     console.log("batalla.atacar: fin TURNO "+contadorTurnos);
@@ -322,7 +374,7 @@ export function getInformacion() {
 
 import { activarComandos, ataque } from './menu_comandos.js';
 
-export function cargarBatalla(pokemon) {
+export function cargarBatalla(pokemon, flag) {
 
     // ocultamos el menú de seleccion
 
@@ -331,5 +383,7 @@ export function cargarBatalla(pokemon) {
         return;
     }
     factorizarOutput(pokemon);
-    activarComandos();
+    if (flag) {
+        // nada
+    }else activarComandos();
 }

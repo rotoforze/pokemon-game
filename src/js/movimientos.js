@@ -28,10 +28,28 @@ export function getAtaque(ataque) {
     
     let ataqueDevolver;
     if (typeof ataque === 'number') {
-        ataqueDevolver = ataquesArray[ataque] ? ataquesArray[ataque][0] : ataquesArray[0][0];
-    }else {
-        ataqueDevolver = ataques.get(ataque);
+        // ataqueDevolver = ataquesArray[ataque] ? ataquesArray[ataque][0] : ataquesArray[0][0];
+        switch (ataque) {
+            case 0:
+                ataque = 'placaje';
+                break;
+            case 1:
+                ataque = 'absorber';
+                break;
+            case 2:
+                ataque = 'gruñido';
+                break;
+            case 3:
+                ataque = 'malicioso';
+                break;
+            default:
+                ataque = 'placaje';
+                break;
+        }
+
     }
+    
+    ataqueDevolver = ataques.get(ataque);
     
     console.log("movimientos.getAtaque: recibido: "+ataque+" | devolviendo: "+ataqueDevolver);
     return ataqueDevolver;

@@ -28,13 +28,7 @@ import { getStatItem } from "./mochila.js";
 function menuDefault(valor) {
     console.log("menu_comandos.menuDefault: volviendo a establecer el menú");
     menu.removeEventListener("click", atkTest, true);
-    
-    if (valor == true) {
-        aniadirTexto("Elige una opción...");
-    }
-    
     menu.setAttribute("style", "height: 200px; width: 100%;");
-    contenedorBtnNuevaPartida.setAttribute("style", "display: none;");
     menuMovimientos.setAttribute("style", "display: none;");
     botones.setAttribute("style", "display: flex; justify-content: space-between; padding: 30px;");
     btnVolverMovimientos.setAttribute("style", "margin:auto 0px auto 0px;");
@@ -44,10 +38,13 @@ function menuDefault(valor) {
     btnMochila.addEventListener("click", mochila, true);
     contenedorMochila.setAttribute("style", "display: none;");
     btnHuir.addEventListener("click", huir, true);
-
+    
     if (valor == true) {
+        contenedorBtnNuevaPartida.setAttribute("style", "display: none;");
         aniadirItemsAMochila("Poción");
         aniadirItemsAMochila("Proteína");
+        establecerMovimientos();
+        aniadirTexto("Elige una opción...");
     }
     bntVolverMochila.addEventListener("click", menuDefault, true);
 }
@@ -63,14 +60,13 @@ function menuAtaque() {
     console.log("menu_comandos.menuAtaque: ...");
     ocultarTodo();
     menuMovimientos.setAttribute("style", "height: 100%;");
-    establecerMovimientos();
 }
 
 function nuevaPartida() {
     console.log("menu_comandos.nuevaPartida: mostrando nueva partida");
     menuMovimientos.setAttribute("style", "display: none;");
     contenedorTexto.setAttribute("style", "height: 50%;");
-    contenedorBtnNuevaPartida.setAttribute("style", "display: block;");
+    contenedorBtnNuevaPartida.setAttribute("style", "display: flex;");
 }
 
 function isAlive(vidaUsuario, vidaEnemigo) {
@@ -107,20 +103,20 @@ function comprobarGanador() {
 
 function perder() {
     console.log("menu_comandos.perder: ...");
-    nuevaPartida();
-
+    
     aniadirTexto("Has perdido...");
+    nuevaPartida();
 }
 
 function ganar() {
     console.log("menu_comandos.ganar: ...");
-    nuevaPartida();
     
     aniadirTexto("¡Has ganado!");
+    nuevaPartida();
 }
 
 import { atacar } from "./batalla.js";
-import { getAtaque } from "./movimientos.js";
+import { intentarHuir } from "./huir.js";
 
 export function ataque(ataque, valor) {
     // muestra el menú de ataque
@@ -128,24 +124,26 @@ export function ataque(ataque, valor) {
     const datos = atacar(turno, ataque);
     turno = datos[0];
 
-    console.log("menu_comandos.ataque.datos: "+datos)
+    console.log("menu_comandos.ataque.datos: "+datos);
     const valorVida = isAlive(datos[3], datos[5]);
-    console.log("menu_comandos.ataque.valorvida: "+valorVida)
+    console.log("menu_comandos.ataque.valorvida: "+valorVida);
 
     // si nadie ha muerto, llamamos a atacar
-    if (turno) {
+    console.log("@@@···> "+datos[0])
+    if (datos[0] == true) {
         textoAtaque(datos[1], datos[4], datos[2], datos[6], datos[7]);
-    }else {
+    }else{
         textoAtaque(datos[1], datos[2], datos[4], datos[6], datos[7]);
     }
+    
 
     // primero comprobamos nadie ha muerto
     if (valorVida === null || valor) {
         console.log("menu_comandos.ataque: yendo a esperarAccion("+ataque+")")
         esperarAccion(ataque);
-    }else {
-        comprobarGanador();
     }
+
+    comprobarGanador();
 }
 
 function mochila() {
@@ -156,6 +154,8 @@ function mochila() {
     contenedorMochila.setAttribute("style", "");
 }
 
+import { getDesdeId } from "./mochila.js";
+
 function huir() {
     // 1 de 6 probabilidades de rerollear el enemigo
     // devuelve -1, 0 ó 1
@@ -163,6 +163,14 @@ function huir() {
     // 0 huida
     // 1 no huye
     console.log("manue_comandos.huir: ");
+    const escape = intentarHuir();
+    if (escape) {
+        const numIdItem = Math.floor((Math.random()*10)); // del 1 al 7 sale un item (0-9)
+
+        // lo comprobamos
+        const item = getDesdeId(numIdItem);
+        aniadirItemsAMochila(item);
+    }
 
 }
 

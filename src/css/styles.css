@@ -40,7 +40,7 @@ body{
   margin: 0px auto 0px auto;
 }
 .centrar-vertical {
-  margin: auto 0px auto 0px;
+  margin: auto 0px auto 0px !important;
 }
 .output, .output-no-bg {
   margin: 1px auto 1px auto;
@@ -80,6 +80,10 @@ body{
 }
 .texto {
   height: 30% !important;
+}
+.texto-mochila-vacia {
+  color: #ffffff8d !important;
+  text-shadow: #9e9e9e 2px 2px 2px;
 }
 .salidaTexto, .texto {
   padding: 10px;
