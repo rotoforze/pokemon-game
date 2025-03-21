@@ -229,8 +229,7 @@ import { getAtaque } from './movimientos.js';
 
 function funcionAbsorber(danio) {
     const percentage = Math.floor((Math.random()*5)+10);
-    const curacion = (percentage*danio)/100;
-    curacion += 5;
+    const curacion = ((percentage*danio)/100)+5;
     console.log("batalla.funcionAbsorber: percentage: "+percentage+" | curacion: "+curacion+" | return: "+Math.floor(curacion))
     return Math.floor(curacion);
 }
