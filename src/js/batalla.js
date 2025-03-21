@@ -230,6 +230,7 @@ import { getAtaque } from './movimientos.js';
 function funcionAbsorber(danio) {
     const percentage = Math.floor((Math.random()*5)+10);
     const curacion = (percentage*danio)/100;
+    curacion += 5;
     console.log("batalla.funcionAbsorber: percentage: "+percentage+" | curacion: "+curacion+" | return: "+Math.floor(curacion))
     return Math.floor(curacion);
 }
@@ -365,7 +366,23 @@ export function atacar(flag, tipoAtaque) {
     console.log("------------------------------------------------------------------------------");
     console.log("batalla.atacar: fin TURNO "+contadorTurnos);
     console.log("------------------------------------------------------------------------------");
-    return [!flag, danioRecibir, nombreUsuario.innerHTML, hpUsuario, nombreEnemigo.innerHTML, valorHpEnemigo, curado, nuevoAtk];
+    console.log("AGH = "+typeof nuevoAtk);
+    if (typeof nuevoAtk === 'number') {
+        nuevoAtk = getAtaque(nuevoAtk);
+    }
+    console.log("AGH = "+typeof nuevoAtk);
+    console.log("AGH = "+nuevoAtk);
+
+    if (flag) {
+        // devolvemos como usuario
+        return [!flag, danioRecibir, nombreUsuario.innerHTML, hpUsuario, nombreEnemigo.innerHTML, valorHpEnemigo, curado, nuevoAtk];
+    }else if (!flag) {
+        // devolvemos como enemigo
+        return [!flag, danioRecibir, nombreUsuario.innerHTML, hpUsuario, nombreEnemigo.innerHTML, valorHpEnemigo, curado, nuevoAtk];
+    }else {
+        // default
+        return [!flag, danioRecibir, nombreUsuario.innerHTML, hpUsuario, nombreEnemigo.innerHTML, valorHpEnemigo, curado, nuevoAtk];
+    }
 }
 
 export function getInformacion() {

@@ -129,6 +129,7 @@ export function ataque(ataque, valor) {
     console.log("menu_comandos.ataque.valorvida: "+valorVida);
 
     // si nadie ha muerto, llamamos a atacar
+    
     console.log("@@@···> "+datos[0])
     if (datos[0] == true) {
         textoAtaque(datos[1], datos[4], datos[2], datos[6], datos[7]);
@@ -225,6 +226,7 @@ const textos = new Map([
 
  // mensajes
  function textoAtaque(danio, pokemonEmisor, pokemonReceptor, absorbido, atk) {
+    console.log("menu_comandos.textoAtaque: "+danio +" atk @ "+ pokemonEmisor +" pkmEmi @ "+ pokemonReceptor + " pkRece @ " + absorbido +" usoAbs @ "+ atk +" atk")
     if (atk === 'placaje' || atk === 'absorber') {
         mostrarTexto(pokemonEmisor+textos.get("usado")+atk+textos.get("inflingido")+danio+textos.get("danioHecho")+pokemonReceptor+".");
         
@@ -236,7 +238,7 @@ const textos = new Map([
         mostrarTexto(pokemonEmisor+textos.get("usado")+atk+textos.get("malicioso")+pokemonReceptor+textos.get("bajada"));
     }else if(atk === 'gruñido') {
         mostrarTexto(pokemonEmisor+textos.get("usado")+atk+textos.get("gruñido")+pokemonReceptor+textos.get("bajada"));
-    }
+    }else mostrarTexto("menu_comandos.textoAtaque: error, no se interpretó correctamente el ataque")
 }
 
 function mostrarTexto(texto) {

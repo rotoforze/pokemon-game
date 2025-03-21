@@ -27,7 +27,7 @@ export function establecerMovimientos() {
 export function getAtaque(ataque) {
     
     let ataqueDevolver;
-    if (typeof ataque === 'number') {
+    if (typeof ataque == 'number') {
         // ataqueDevolver = ataquesArray[ataque] ? ataquesArray[ataque][0] : ataquesArray[0][0];
         switch (ataque) {
             case 0:
@@ -46,7 +46,7 @@ export function getAtaque(ataque) {
                 ataque = 'placaje';
                 break;
         }
-
+        return ataque;
     }
     
     ataqueDevolver = ataques.get(ataque);
