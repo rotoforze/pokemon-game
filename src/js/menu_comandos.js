@@ -22,6 +22,18 @@ export function activarComandos() {
     menuDefault(true);
 }
 
+export function rerollEnemigo() {
+    mostrarTexto("¡Has huido!");
+    menuDefault();
+    const itemAAniadir = getDesdeId(Math.floor(Math.random()*10));
+
+    if (itemAAniadir >= 1 && itemAAniadir <= 7) {
+        aniadirItemsAMochila(itemAAniadir);
+        aniadirTexto("También has encontrado x1 "+itemAAniadir);
+    }
+    
+}
+
 import { aniadirItemsAMochila } from "./mochila.js";
 import { getStatItem } from "./mochila.js";
 

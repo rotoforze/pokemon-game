@@ -388,7 +388,7 @@ export function getInformacion() {
     return [nombreUsuario.innerHTML, hpUsuario, nombreEnemigo.innerHTML, valorHpEnemigo];
 }
 
-import { activarComandos, ataque } from './menu_comandos.js';
+import { activarComandos, ataque, rerollEnemigo } from './menu_comandos.js';
 
 export function cargarBatalla(pokemon, flag) {
 
@@ -400,6 +400,9 @@ export function cargarBatalla(pokemon, flag) {
     }
     factorizarOutput(pokemon);
     if (flag) {
-        // nada
-    }else activarComandos();
+        rerollEnemigo();
+    }else {
+        activarComandos();
+    }
+
 }
