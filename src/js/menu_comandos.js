@@ -26,7 +26,7 @@ export function rerollEnemigo() {
     mostrarTexto("¡Has huido!");
     menuDefault();
     const itemAAniadir = getDesdeId(Math.floor(Math.random()*10));
-    console.log("menu_comandos.rerollEnemigo: "+itemAAniadir);
+    console.log("menu_comandos.rerollEnemigo: "+itemAAniadir+" @ "+typeof itemAAniadir);
 
     if (typeof itemAAniadir == 'String') {
         aniadirItemsAMochila(itemAAniadir);
