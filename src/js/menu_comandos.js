@@ -26,8 +26,9 @@ export function rerollEnemigo() {
     mostrarTexto("¡Has huido!");
     menuDefault();
     const itemAAniadir = getDesdeId(Math.floor(Math.random()*10));
+    console.log("menu_comandos.rerollEnemigo: "+itemAAniadir);
 
-    if (itemAAniadir >= 1 && itemAAniadir <= 7) {
+    if (typeof itemAAniadir == 'String') {
         aniadirItemsAMochila(itemAAniadir);
         aniadirTexto("También has encontrado x1 "+itemAAniadir);
     }
@@ -176,14 +177,7 @@ function huir() {
     // 0 huida
     // 1 no huye
     console.log("manue_comandos.huir: ");
-    const escape = intentarHuir();
-    if (escape) {
-        const numIdItem = Math.floor((Math.random()*10)); // del 1 al 7 sale un item (0-9)
-
-        // lo comprobamos
-        const item = getDesdeId(numIdItem);
-        aniadirItemsAMochila(item);
-    }
+    intentarHuir();
 
 }
 
