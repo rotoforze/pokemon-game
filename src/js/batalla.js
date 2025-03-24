@@ -34,28 +34,35 @@ let velEnemigo;
 
 let contadorTurnos = 0;
 
-async function factorizarOutput(pokemon) {
+async function factorizarOutput(pokemon, flag) {
     
+    if (flag){
+        borrarEnemigo();
+        const enemigo = await getApi(Math.floor(Math.random()*1024+1));
+        factorizarEnemigo(enemigo);
+    }else{
+        selector.style.display = "none";
+        // mostramos la pantalla de batalla
+        batalla.style.display = "block";
+        borrarEnemigo();
+        borrarUsuario();
+    
+        // primero hay que poner los parámetros del pokemon
+        // elegido en sus respectivos sitios...
+        // para ello primero recuperamos sus datos de la api
+        const user = await getApi(pokemon);
+        if (user === undefined) {
+            console.log("batalla.factorizarOutput --> user: "+user);
+            factorizarUsuario(pokemon);
+        }else factorizarUsuario(user);
+        
+        // recogemos un pokemon random...
+        const enemigo = await getApi(Math.floor(Math.random()*1024+1));
+        factorizarEnemigo(enemigo);
+    }
+
     // ocultamos el selector...
-    selector.style.display = "none";
-    // mostramos la pantalla de batalla
-    batalla.style.display = "block";
-    borrarEnemigo();
-    borrarUsuario();
-
-    // primero hay que poner los parámetros del pokemon
-    // elegido en sus respectivos sitios...
-    // para ello primero recuperamos sus datos de la api
-    const user = await getApi(pokemon);
-    if (user === undefined) {
-        console.log("batalla.factorizarOutput --> user: "+user);
-        factorizarUsuario(pokemon);
-    }else factorizarUsuario(user);
     
-    // recogemos un pokemon random...
-    const enemigo = await getApi(Math.floor(Math.random()*1024+1));
-    factorizarEnemigo(enemigo);
-
     // TO-DO
     // añadir la consola visual donde eliges el ataque
 }
@@ -128,6 +135,7 @@ export function addUsuarioHp(cantidad) {
         while (cantidad > 0 && hpUsuario < userMaxHp.innerHTML) {
             hpUsuario++;
             cantidadCurada++;
+            cantidad--;
         }
     
         console.log("batalla.addUsuarioHp: "+nombreUsuario.innerHTML+" curado x"+cantidadCurada);
@@ -214,6 +222,7 @@ export function addEnemigoHp(cantidad) {
     while (cantidad < 0 && valorHpEnemigo <= enemigoHpMax.innerHTML) {
         valorHpEnemigo++;
         cantidadCurada++;
+        cantidad--;
     }
 
     console.log("batalla.addUsuarioHp: "+nombreEnemigo.innerHTML+" curado x"+cantidadCurada);
@@ -384,16 +393,7 @@ export function atacar(flag, tipoAtaque) {
     console.log("AGH = "+typeof nuevoAtk);
     console.log("AGH = "+nuevoAtk);
 
-    if (flag) {
-        // devolvemos como usuario
-        return [!flag, danioRecibir, nombreUsuario.innerHTML, hpUsuario, nombreEnemigo.innerHTML, valorHpEnemigo, curado, nuevoAtk];
-    }else if (!flag) {
-        // devolvemos como enemigo
-        return [!flag, danioRecibir, nombreUsuario.innerHTML, hpUsuario, nombreEnemigo.innerHTML, valorHpEnemigo, curado, nuevoAtk];
-    }else {
-        // default
-        return [!flag, danioRecibir, nombreUsuario.innerHTML, hpUsuario, nombreEnemigo.innerHTML, valorHpEnemigo, curado, nuevoAtk];
-    }
+    return [!flag, danioRecibir, nombreUsuario.innerHTML, hpUsuario, nombreEnemigo.innerHTML, valorHpEnemigo, curado, nuevoAtk];
 }
 
 export function getInformacion() {
@@ -410,11 +410,13 @@ export function cargarBatalla(pokemon, flag) {
     if (pokemon == null) {
         return;
     }
-    factorizarOutput(pokemon);
+    
     if (flag) {
         rerollEnemigo();
+        factorizarOutput(pokemon, true);
     }else {
         activarComandos();
+        factorizarOutput(pokemon);
     }
 
 }

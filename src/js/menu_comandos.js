@@ -145,10 +145,14 @@ import { intentarHuir } from "./huir.js";
 export function ataque(ataque, valor, atacaEnemigo) {
     // muestra el menú de ataque
     ataque = ataque == null ? 0 : ataque;
-    const datos = atacar(turno, ataque);
+    let datos;
     if (atacaEnemigo) {
-
-    }else turno = datos[0];
+        datos = atacar(false);
+    }else {
+        datos = atacar(turno, ataque);
+        turno = datos[0];
+    } 
+        
 
     console.log("menu_comandos.ataque.datos: "+datos);
     const valorVida = isAlive(datos[3], datos[5]);
@@ -165,7 +169,10 @@ export function ataque(ataque, valor, atacaEnemigo) {
     
 
     // primero comprobamos nadie ha muerto
-    if (valorVida === null || valor) {
+    if (atacaEnemigo) {
+        comprobarGanador();
+        return;
+    }else if (valorVida === null || valor) {
         console.log("menu_comandos.ataque: yendo a esperarAccion("+ataque+")")
         esperarAccion(ataque);
     }
@@ -191,8 +198,8 @@ function huir() {
     // 1 no huye
     console.log("manue_comandos.huir: ");
     if (!intentarHuir()) {
-        mostrarTexto("No has conseguido huir...");
-        ataque(null, null, false);
+        ataque(null, false, true);
+        aniadirTexto("No has conseguido huir...");
     }
 
 }

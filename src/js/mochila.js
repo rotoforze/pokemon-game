@@ -61,9 +61,7 @@ export function getDesdeId(numero) {
     }
 }
 
-import { addUsuarioHp } from "./batalla.js";
-import { addUsuarioAtk } from "./batalla.js";
-import { addUsuarioDef } from "./batalla.js";
+import { addUsuarioHp, addUsuarioAtk, addUsuarioDef } from "./batalla.js";
 
 function usarCuracion(tipo) {
     // cura cantidad
@@ -96,12 +94,12 @@ function usar() {
     if (this != undefined) {
         console.log("mochila.usar: buscando item");
         if (this.innerHTML == 'Poción' || this.innerHTML == 'Refresco' || this.innerHTML == 'Curar Total'){
-            if (usarCuracion(this.innerHTML) == -1) {
+            const curado = usarCuracion(this.innerHTML)
+            if ( curado == -1) {
                 mostrarTexto("Tienes la vida al máximo.");
                 return;
             }else {
-                const curado = usarCuracion(this.innerHTML);
-                mostrarTexto("Has usado "+this.innerHTML+". Te has curado "+getStatItem(this.innerHTML));
+                mostrarTexto("Has usado "+this.innerHTML+". Te has curado "+curado);
             }
         }else if(this.innerHTML == 'Proteína' || this.innerHTML == 'Ataque X') {
             const atk = usarMasAtk(this.innerHTML);
