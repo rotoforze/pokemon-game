@@ -47,6 +47,7 @@ body{
 }
 .output {
   background-image: radial-gradient(#afafaf, #aaafff, #00bbbf);
+  border: 10px outset #9e9e9e;
 }
 .statsUsuario {
   margin: 12% 0 0 0;

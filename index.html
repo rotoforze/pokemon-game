@@ -8,6 +8,47 @@
     <!-- bootstrap -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <style>
+        @media only screen and (max-width: 800px) {
+            .btn-toolbar, .output {
+                width: 40dvw;
+            }
+            .buscador-contenedor, .github-contenedor, .reiniciar-contenedor {
+                margin-bottom: 5px !important;
+            }
+            .output {
+                width: 95dvw !important;
+                max-height: 115% !important;
+                overflow-y: scroll !important;
+            }
+            .pokemons {
+                overflow: visible;
+                flex-direction: column;
+                height: 50% !important;
+                width: 100% !important;
+                margin: 10px auto 0px auto !important;
+            }
+            .selector {
+                margin: 0px;
+            }
+            .pokemon-1, .pokemon-2, .pokemon-3 {
+                height: 2% !important;
+                width: 50% !important;
+            }
+            .aceptar {
+                width: 30dvw;
+            }
+            .volver-atras-mochila, .volver-atras-movimientos {
+                width: 12%;
+            }
+            .movimiento {
+                width: 40% !important;
+            }
+            .btn-movimiento {
+                width: 100% !important;
+            }
+        }
+    </style>
 </head>
 <body class="flex-f row row-cols-8">
     <!-- Pokemon básico, te da a eligir entre los 3 iniciales de 1ªgen (#1, #4, #7) -->
@@ -24,15 +65,15 @@
     </div>
     
     <!-- para hacerlo más retro, vamos a forzar a al juego a ser 800x600 -->
-    <main class="output col-10" style="max-width: 800px;width: 800px;max-height: 600px;height: 600px;">
+    <main class="output col-10" style="max-width: 800px;width: 800px;max-height: 700px;height: 700px;">
         <!-- el siguiente div está destinado únicamente a ser el menú donde eliges el pokemon para el combate -->
         <div class="selector row-cols-5">
             <!-- en el siguiente div se verán a los 3 pokemon -->
             <div class="pokemons col-4 flex-f" style="width:80%;margin:10% auto 0px auto;">
                 <!-- esta parte la modificamos con js -->
-                <div id="pokemon-1" class="centrar" style="height: 200px; width: 150px; margin: 25px;"></div>
-                <div id="pokemon-2" class="centrar" style="height: 200px; width: 150px; margin: 25px;"></div>
-                <div id="pokemon-3" class="centrar"style="height: 200px; width: 150px; margin: 25px;"></div>
+                <div id="pokemon-1" class="centrar" style="height: 200px; width: 150px;"></div>
+                <div id="pokemon-2" class="centrar" style="height: 200px; width: 150px;"></div>
+                <div id="pokemon-3" class="centrar"style="height: 200px; width: 150px;"></div>
             </div>
             <button class="aceptar btn btn-warning col-2 centrar">Seleccionar</button>
         </div>
@@ -40,7 +81,7 @@
         <!-- el siguiente div está destinado únicamente a ser el menú de batalla -->
          <div class="batalla row-cols-7" style="display:none; justify-content: space-between; flex-direction: column;">
             <!-- visor de los pokemons y la vida -->
-            <div class="visor row-10 col-16">
+            <div class="visor row-2 col-16">
                 <!-- enemigo -->
                  <div class="contenedor-enemigo flex-f" style="justify-content: space-between;">
                      <div class="statsEnemigo stats" style="height: 80px; width: 400px;">
@@ -57,7 +98,7 @@
                 <div class="contenedor-usuario flex-f statsUsuario" style="justify-content: space-between;">
                     <div class="img-usuario aling-self-start" style="overflow: visible;"></div>
                     <div class="stats aling-self-end" style="height: 80px; width: 400px;">
-                        <div class="nombreUsuario align-self-end centrar fw-semibold"></div>
+                    <div class="nombreUsuario align-self-end centrar fw-semibold"></div>
                         <div class="stat-hp-usuario">
                             <div class="flex-f hp-usuario centrar"><span class="hp-actual-usuario"></span><span class="barraLateral">/</span><span class="hp-maxima-usuario"></span><i class="bi bi-heart-fill" style="color:#ff3700be;"></i></div>
                             <div class="barra-hp-usuario flex-f"></div>
@@ -67,13 +108,13 @@
             </div>
 
             <!-- contenedor de botones, menus varios...-->
-             <div class="comandos col-3 --bs-primary-border-subtle" style="height: 200px; width: 100%;">
+             <div class="comandos col-3 --bs-primary-border-subtle" style="height:100%; width: 100%;">
                 <!-- menu general -->
                 <div class="botones-comandos flex-f">
                     <button class="atacar btn btn-warning">Atacar</button>
                     <button class="mochila btn btn-warning">Mochila</button>
                     <button class="huir btn btn-warning">Huir</button>
-            </div>
+                </div>
                 <!-- salida de texto -->
                 <div id="contenedor-texto" style="height: 50%;"><span class="salidaTexto fw-bold" style="height: 100%;"></span></div>
                 <div class="contenedor-boton-reiniciar centrar">
@@ -88,10 +129,10 @@
 
                     <!-- botones de los movimientos -->
                     <div class="movimientos flex-f flex-f-w centrar" style="height: 100%;width: 80%;">
-                        <div class="contenedor-primer-movimiento w-50 centrar"><button class="primer-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
-                        <div class="contenedor-segundo-movimiento w-50 centrar"><button class="segundo-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
-                        <div class="contenedor-tercer-movimiento w-50 centrar"><button class="tercer-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
-                        <div class="contenedor-cuarto-movimiento w-50 centrar"><button class="cuarto-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
+                        <div class="movimiento contenedor-primer-movimiento w-50 centrar"><button class="btn-movimiento primer-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
+                        <div class="movimiento contenedor-segundo-movimiento w-50 centrar"><button class="btn-movimiento segundo-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
+                        <div class="movimiento contenedor-tercer-movimiento w-50 centrar"><button class="btn-movimiento tercer-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
+                        <div class="movimiento contenedor-cuarto-movimiento w-50 centrar"><button class="btn-movimiento cuarto-movimiento btn btn-warning col-4 centrar centrar-vertical w-50" style="margin: 12% auto 0px auto;"></button></div>
                     </div>
 
                 </div>

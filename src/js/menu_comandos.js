@@ -28,7 +28,7 @@ export function rerollEnemigo() {
     const itemAAniadir = getDesdeId(Math.floor(Math.random()*10));
     console.log("menu_comandos.rerollEnemigo: "+itemAAniadir+" @ "+typeof itemAAniadir);
 
-    if (typeof itemAAniadir == 'String') {
+    if (typeof itemAAniadir == 'string') {
         aniadirItemsAMochila(itemAAniadir);
         aniadirTexto("También has encontrado x1 "+itemAAniadir);
     }
@@ -36,9 +36,8 @@ export function rerollEnemigo() {
 }
 
 import { aniadirItemsAMochila } from "./mochila.js";
-import { getStatItem } from "./mochila.js";
 
-function menuDefault(valor) {
+export function menuDefault(valor, msg) {
     console.log("menu_comandos.menuDefault: volviendo a establecer el menú");
     menu.removeEventListener("click", atkTest, true);
     menu.setAttribute("style", "height: 200px; width: 100%;");
@@ -59,7 +58,12 @@ function menuDefault(valor) {
         establecerMovimientos();
         aniadirTexto("Elige una opción...");
     }
+    
     bntVolverMochila.addEventListener("click", menuDefault, true);
+
+    if (msg != undefined) {
+        aniadirTexto("msg");
+    }
 }
 
 function ocultarTodo() {
@@ -76,6 +80,7 @@ function menuAtaque() {
 }
 
 function nuevaPartida() {
+botones.setAttribute("style", "display: none;");
     console.log("menu_comandos.nuevaPartida: mostrando nueva partida");
     menuMovimientos.setAttribute("style", "display: none;");
     contenedorTexto.setAttribute("style", "height: 50%;");
@@ -97,7 +102,13 @@ import { getInformacion } from "./batalla.js";
 function comprobarGanador() {
     const info = getInformacion();
     console.log("menu_comandos.comprobarGanador -->"+info[1]+" @ "+info[3])
+    
+    if (info[1] == undefined || info[3] == undefined) {
+        return -1;
+    }
+
     const variable = isAlive(info[1], info[3]);
+
     if(variable == true) {
         // pierde el usuario
         console.log("menu_comandos.comprobarGanador: pierde usuario");
@@ -131,11 +142,13 @@ function ganar() {
 import { atacar } from "./batalla.js";
 import { intentarHuir } from "./huir.js";
 
-export function ataque(ataque, valor) {
+export function ataque(ataque, valor, atacaEnemigo) {
     // muestra el menú de ataque
     ataque = ataque == null ? 0 : ataque;
     const datos = atacar(turno, ataque);
-    turno = datos[0];
+    if (atacaEnemigo) {
+
+    }else turno = datos[0];
 
     console.log("menu_comandos.ataque.datos: "+datos);
     const valorVida = isAlive(datos[3], datos[5]);
@@ -177,23 +190,19 @@ function huir() {
     // 0 huida
     // 1 no huye
     console.log("manue_comandos.huir: ");
-    intentarHuir();
+    if (!intentarHuir()) {
+        mostrarTexto("No has conseguido huir...");
+        ataque(null, null, false);
+    }
 
 }
 
 function noEsperarAcion(atk) {
     console.log("menu_comandos.noEsperarAccion: volviendo al menu por defecto")
     ataque(atk, true);
-    
-    // para eliminar el eventListener
-    // const nuevoMenu = menu.cloneNode(true);
-    // menu.replaceWith(nuevoMenu);
-    
     menuDefault();
 
     botones.setAttribute("style", "display: flex; justify-content: space-between; padding: 30px;");
-
-
 }
 
 let atkProvisional;
@@ -247,7 +256,7 @@ const textos = new Map([
     }else mostrarTexto("menu_comandos.textoAtaque: error, no se interpretó correctamente el ataque")
 }
 
-function mostrarTexto(texto) {
+export function mostrarTexto(texto) {
     // pone un mensaje en el menú
     // cuando el usuario le da click, continúa el programa
     console.log("menu_comandos.mostrarTexto: cambiando el texto: "+texto)
@@ -255,7 +264,7 @@ function mostrarTexto(texto) {
     
 }
 
-function aniadirTexto(texto) {
+export function aniadirTexto(texto) {
     console.log("menu_comandos.aniadirTexto: añadiendo texto: "+texto)
     salidaTexto.innerHTML += " "+texto;
 }

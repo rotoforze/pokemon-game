@@ -123,21 +123,33 @@ function ponerBarraVidaUsuario() {
 }
 
 export function addUsuarioHp(cantidad) {
-    let cantidadCurada = 0;
-    while (cantidad > 0 && hpUsuario < userMaxHp.innerHTML) {
-        hpUsuario++;
-        cantidadCurada++;
+    if (hpUsuario < userMaxHp.innerHTML) {
+        let cantidadCurada = 0;
+        while (cantidad > 0 && hpUsuario < userMaxHp.innerHTML) {
+            hpUsuario++;
+            cantidadCurada++;
+        }
+    
+        console.log("batalla.addUsuarioHp: "+nombreUsuario.innerHTML+" curado x"+cantidadCurada);
+        actulizarVidas();
+        return cantidadCurada;
+    }else {
+        console.log("batalla.addUsuarioHp: vida al máximo");
+        return -1;
     }
 
-    console.log("batalla.addUsuarioHp: "+nombreUsuario.innerHTML+" curado x"+cantidadCurada);
-    actulizarVidas();
-    return cantidadCurada;
 }
 
 export function addUsuarioAtk(cantidad) {
     console.log("batalla.addUsuarioAtk: "+atkUsuario+">>>"+(atkUsuario+cantidad));
     atkEnemigo += cantidad;
     return atkUsuario;
+}
+
+export function addUsuarioDef(cantidad) {
+    console.log ("batalla.addUsuarioDef: "+defUsuario+">>>"+(defUsuario+cantidad));
+    defUsuario += cantidad;
+    return defUsuario;
 }
 
 /* ->->->->->->- ENEMIGO -<-<-<-<-<-<- */

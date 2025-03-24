@@ -28,7 +28,6 @@ export function getAtaque(ataque) {
     
     let ataqueDevolver;
     if (typeof ataque == 'number') {
-        // ataqueDevolver = ataquesArray[ataque] ? ataquesArray[ataque][0] : ataquesArray[0][0];
         switch (ataque) {
             case 0:
                 ataque = 'placaje';

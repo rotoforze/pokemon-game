@@ -63,13 +63,14 @@ export function getDesdeId(numero) {
 
 import { addUsuarioHp } from "./batalla.js";
 import { addUsuarioAtk } from "./batalla.js";
+import { addUsuarioDef } from "./batalla.js";
 
 function usarCuracion(tipo) {
     // cura cantidad
     console.log("mochila.usarCuracion: "+tipo);
 
     const cantidad = getStatItem(tipo);
-    addUsuarioHp(cantidad);
+    return addUsuarioHp(cantidad);
 
 }
 
@@ -78,19 +79,36 @@ function usarMasAtk(tipo) {
     console.log("mochila.usarMasAtk: "+tipo);
     
     const cantidad = getStatItem(tipo);
-    addUsuarioAtk(cantidad);
+    return addUsuarioAtk(cantidad);
 }
+
+function usarMasDef(tipo) {
+    console.log("mochila.usarMasDef: "+tipo);
+
+    const cantidad = getStatItem(tipo);
+    return addUsuarioDef(cantidad);
+}
+
+import { mostrarTexto } from "./menu_comandos.js";
 
 function usar() {
     
     if (this != undefined) {
         console.log("mochila.usar: buscando item");
         if (this.innerHTML == 'Poción' || this.innerHTML == 'Refresco' || this.innerHTML == 'Curar Total'){
-            usarCuracion(this.innerHTML);
+            if (usarCuracion(this.innerHTML) == -1) {
+                mostrarTexto("Tienes la vida al máximo.");
+                return;
+            }else {
+                const curado = usarCuracion(this.innerHTML);
+                mostrarTexto("Has usado "+this.innerHTML+". Te has curado "+getStatItem(this.innerHTML));
+            }
         }else if(this.innerHTML == 'Proteína' || this.innerHTML == 'Ataque X') {
-            usarMasAtk(this.innerHTML);
+            const atk = usarMasAtk(this.innerHTML);
+            mostrarTexto("Has usado "+this.innerHTML+". Te ha aumentado el ataque "+getStatItem(this.innerHTML));
         }else if(this.innerHTML == 'Hierro' || this.innerHTML == 'Defensa X') {
-       
+            const def = usarMasDef(this.innerHTML);
+            mostrarTexto("Has usado "+this.innerHTML+". Te ha aumentado la defensa "+getStatItem(this.innerHTML));
         }
         this.remove();
     }
@@ -110,6 +128,8 @@ function usar() {
     }
 }
 
+import { menuDefault } from "./menu_comandos.js";
+
 export function aniadirItemsAMochila(nombre) {
 
     console.log("mochila.aniadirItemsAMochila: intentando añadir item "+nombre);
@@ -122,7 +142,8 @@ export function aniadirItemsAMochila(nombre) {
         itemToAdd.innerHTML = nombre;
         itemToAdd.setAttribute("class", "btn btn-info");
         itemToAdd.setAttribute("style", "margin-left: 3px;height:30%;");
-        itemToAdd.addEventListener("click", usar);
+        itemToAdd.addEventListener("click", usar, true);
+        itemToAdd.addEventListener("click", menuDefault, true)
         contenedorItems.appendChild(itemToAdd);
         usar();
 
