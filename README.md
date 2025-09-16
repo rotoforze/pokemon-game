@@ -1,5 +1,5 @@
 # pokemon-game
-
+[Probar aplicación](https://rotoforze.github.io/pokemon-game)
 Hecho totalmente en JavaScript, usando HTML y CSS, además utiliza Bootstrap.
 
 Elige entre 3 pokémon aleatorios. El pokémon elegido será con el que combatirás contra un enemigo aleatorio.
